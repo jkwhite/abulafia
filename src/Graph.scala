@@ -61,15 +61,21 @@ class Graph {
 
     def generate2(distance:Int, opt:Options) : String = {
         val r = new Random()
-        val ws = new scala.collection.mutable.ArrayBuffer[Word]
-        ws+=vs("__START__")
-        while(ws.last.text!="__STOP__") {
-            ws+=ws.last.next(r, ws.takeRight(distance), opt)
-        }
+        var chosen = new scala.collection.mutable.ArrayBuffer[Word]
+        var tries = 0
+        do {
+            val ws = new scala.collection.mutable.ArrayBuffer[Word]
+            ws+=vs("__START__")
+            while(ws.last.text!="__STOP__") {
+                ws+=ws.last.next(r, ws.takeRight(distance), opt)
+            }
+            tries = tries + 1
+            if(chosen.size < ws.size) chosen = ws
+        } while(chosen.size < opt.min && tries < 1000)
 
         val b = new StringBuilder()
-        var last = ws(0)
-        ws.slice(1, ws.size-1).foreach(w => {
+        var last = chosen(0)
+        chosen.slice(1, chosen.size-1).foreach(w => {
             if(w.separate(last)) b.append(" ")
             b.append(w.text)
             last = w

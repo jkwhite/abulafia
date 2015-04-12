@@ -8,9 +8,10 @@ object Abulafia extends App {
     val spread = Integer.parseInt(args(0))
     val opt = new Options(
         java.lang.Long.parseLong(args(1)),
-        java.lang.Long.parseLong(args(2))
+        java.lang.Long.parseLong(args(2)),
+        java.lang.Long.parseLong(args(3))
     )
-    val files = args.drop(3)
+    val files = args.drop(4)
     //val file = args(0)
     //val sc = new Scanner(Source.fromFile(file).bufferedReader);
     val g = new Graph()
@@ -21,5 +22,5 @@ object Abulafia extends App {
         p.parse(g, file, spread)
     })
     //println("g: "+g)
-    for(i <- 1 to 7) println(g.generate2(spread, opt))
+    for(i <- 1 to 15) println(g.generate2(spread, opt))
 }

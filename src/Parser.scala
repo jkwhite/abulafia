@@ -4,8 +4,12 @@ import scala.io.Source
 
 class Parser {
     def parse(g:Graph, file:String, spread:Int) = {
-        val sc = new StreamTokenizer(Source.fromFile(file).bufferedReader);
+        val sc = new StreamTokenizer(Source.fromFile(file, "ISO-8859-1").bufferedReader);
         sc.ordinaryChar('.')
+        sc.ordinaryChar('\'')
+        sc.wordChars('\'', '\'')
+        sc.ordinaryChars('0','9')
+        sc.wordChars('0','9')
         //println("pat: "+sc.delimiter())
         val ws = new scala.collection.mutable.ArrayBuffer[String]
         val start = "__START__"
@@ -26,6 +30,7 @@ class Parser {
                     w match {
                         case "."|"?"|"!" => {
                             ws+=stop
+                            //println("linked "+ws+"")
                             for(i <- 0 to ws.size-2) {
                                 for(j <- i+1 to Math.min(ws.size-1, i+spread)) {
                                     if(i!=j) {
